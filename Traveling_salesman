@@ -1,40 +1,26 @@
-# Python3 program to implement traveling salesman 
-# problem using naive approach. 
 from sys import maxsize 
 from itertools import permutations
-V = 4
- 
-# implementation of traveling Salesman Problem 
+V = 4 #Represents the number of vertices (cities) in the graph 
 def travellingSalesmanProblem(graph, s): 
- 
-    # store all vertex apart from source vertex 
-    vertex = [] 
+# Function takes graph as a 2D matrix and a starting vertex (s)
+#The function returns the minimum cost to travel the whole graph from the starting vertex to the starting vertex 
+    vertex = []
     for i in range(V): 
         if i != s: 
-            vertex.append(i) 
- 
-    # store minimum weight Hamiltonian Cycle 
+            vertex.append(i)  #stores all vertex except the starting vertex 
     min_path = maxsize 
-    next_permutation=permutations(vertex)
-    for i in next_permutation:
- 
-        # store current Path weight(cost) 
+    next_permutation=permutations(vertex) #calculates all permutations of that vertex 
+    for i in next_permutation: 
         current_pathweight = 0
- 
-        # compute current path weight 
         k = s 
         for j in i: 
             current_pathweight += graph[k][j] 
             k = j 
         current_pathweight += graph[k][s] 
- 
-        # update minimum 
-        min_path = min(min_path, current_pathweight) 
+        min_path = min(min_path, current_pathweight) #updates the mimimum cost when it finds a smaller cost
          
-    return min_path 
+    return min_path #reurns the mimimum path needed to do the whole loop from starting vertex
  
- 
-# Driver Code 
 if __name__ == "__main__": 
  
     # matrix representation of graph 
