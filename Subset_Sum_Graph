@@ -1,1 +1,47 @@
-bob
+import time
+import matplotlib.pyplot as plt
+
+flag = False  # used to check whether at least one of the subsets with the desired sum is found
+
+def print_subset_sum(i, n, _set, target_sum, subset):
+    global flag
+    if target_sum == 0:  # if the target sum is zero, a valid subset is found
+        flag = True  # subset is printed when the flag is true
+        # Print the valid subset
+        print("[", end=" ")
+        for element in subset:
+            print(element, end=" ")
+        print("]", end=" ")
+        return
+
+    if i == n:  # if the end of an array is reached, the function is returned
+        return
+
+    print_subset_sum(i + 1, n, _set, target_sum, subset)  # recursive call
+
+    if _set[i] <= target_sum:
+        subset.append(_set[i])
+        print_subset_sum(i + 1, n, _set, target_sum - _set[i], subset)  # recursive call
+        subset.pop()
+
+if __name__ == "__main__":
+    # Initialize variables for plotting
+    num_cities_list = []
+    time_list = []
+
+    for num_cities in range(3, 11):  # Can be changed as neded 
+        _set = list(range(1, num_cities + 1))
+        target_sum = num_cities * (num_cities + 1) // 2  
+
+        n = len(_set)
+        subset = []
+        start_time = time.time()
+        print_subset_sum(0, n, _set, target_sum, subset)
+        end_time = time.time()
+        num_cities_list.append(num_cities)
+        time_list.append(end_time - start_time)
+    plt.plot(num_cities_list, time_list, marker='o')
+    plt.title('Time Complexity of Subset Sum Printing')
+    plt.xlabel('Number of Cities')
+    plt.ylabel('Time (seconds)')
+    plt.show()
