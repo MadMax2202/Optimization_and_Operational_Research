@@ -1,0 +1,61 @@
+from sys import maxsize
+from itertools import permutations
+import time
+import matplotlib.pyplot as plt
+
+V = 4  # Represents the number of vertices (cities) in the graph
+
+def travellingSalesmanProblem(graph, s):
+    # Function takes graph as a 2D matrix and a starting vertex (s)
+    # The function returns the minimum cost to travel the whole graph from the starting vertex to the starting vertex
+    vertex = []
+    for i in range(V):
+        if i != s:
+            vertex.append(i)  # stores all vertices except the starting vertex
+    min_path = maxsize
+    next_permutation = permutations(vertex)  # calculates all permutations of that vertex
+
+    for i in next_permutation:
+        current_pathweight = 0
+        k = s
+        for j in i:
+            current_pathweight += graph[k][j]
+            k = j
+        current_pathweight += graph[k][s]
+        min_path = min(min_path, current_pathweight)  # updates the minimum cost when it finds a smaller cost
+
+    return min_path  # returns the minimum path needed to do the whole loop from the starting vertex
+
+
+if __name__ == "__main__":
+    # matrix representation of graph
+    graph = [[0, 10, 15, 20], [10, 0, 35, 25],
+             [15, 35, 0, 30], [20, 25, 30, 0]]
+
+    # Initialize variables for plotting
+    num_vertices_list = []
+    time_list = []
+
+    for num_vertices in range(3, 11):  
+        V = num_vertices
+        graph = [[0] * num_vertices for _ in range(num_vertices)]
+        
+        # We populate the graph with random weights
+        for i in range(num_vertices):
+            for j in range(num_vertices):
+                if i != j:
+                    graph[i][j] = 10  
+
+        s = 0
+
+        start_time = time.time()
+        travellingSalesmanProblem(graph, s)
+        end_time = time.time()
+        num_vertices_list.append(num_vertices)
+        time_list.append(end_time - start_time)
+
+    plt.plot(num_vertices_list, time_list, marker='o')
+    plt.title('Time Complexity of Travelling Salesman Problem')
+    plt.xlabel('Number of Vertices')
+    plt.ylabel('Time (seconds)')
+    plt.show()
